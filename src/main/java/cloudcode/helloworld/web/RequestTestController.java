@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
  * Defines a controller to handle HTTP requests
  */
 @Controller
-public final class HelloWorldController {
+public final class RequestTestController {
 
     private static String project;
-    private static final Logger logger = LoggerFactory.getLogger(HelloWorldController.class);
+    private static final Logger logger = LoggerFactory.getLogger(RequestTestController.class);
 
     @Value("${NAME:Santi}")
     String name;

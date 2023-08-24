@@ -8,9 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /** This class serves as an entry point for the Spring Boot app. */
 @SpringBootApplication
-public class HelloWorldApplication {
+public class SpringEntryPoint {
 
-  private static final Logger logger = LoggerFactory.getLogger(HelloWorldApplication.class);
+  private static final Logger logger = LoggerFactory.getLogger(SpringEntryPoint.class);
 
   public static void main(final String[] args) throws Exception {
     String port = System.getenv("PORT");
@@ -18,7 +18,7 @@ public class HelloWorldApplication {
       port = "8080";
       logger.warn("$PORT environment variable not set, defaulting to 8080");
     }
-    SpringApplication app = new SpringApplication(HelloWorldApplication.class);
+    SpringApplication app = new SpringApplication(SpringEntryPoint.class);
     app.setDefaultProperties(Collections.singletonMap("server.port", port));
 
     // Start the Spring Boot application.
