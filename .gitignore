@@ -8,6 +8,7 @@
 .idea/compiler.xml
 .idea/encodings.xml
 .idea/vcs.xml
+.idea
 target
 .classpath
 .project
