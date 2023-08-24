@@ -1,4 +1,4 @@
-package cloudcode.helloworld.web;
+package satellite.access.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

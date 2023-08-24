@@ -1,4 +1,4 @@
-package cloudcode.helloworld.web;
+package satellite.access.web;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

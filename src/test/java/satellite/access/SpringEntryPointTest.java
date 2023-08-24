@@ -1,11 +1,8 @@
-package cloudcode.helloworld.web;
+package satellite.access;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.core.StringContains.containsString;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 //import okhttp3.OkHttpClient;
 //import okhttp3.Request;
 //import okhttp3.Response;
