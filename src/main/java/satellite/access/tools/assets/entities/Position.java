@@ -1,6 +1,6 @@
 package satellite.access.tools.assets.entities;
 
-import com.accessintervals.tools.assets.Asset;
+import satellite.access.tools.assets.Asset;
 
 public class Position extends Asset {
 

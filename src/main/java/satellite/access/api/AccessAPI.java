@@ -1,13 +1,13 @@
 package satellite.access.api;
 
-import com.accessintervals.tools.Simulation;
-import com.accessintervals.tools.assets.entities.Position;
-import com.accessintervals.tools.assets.entities.Satellite;
-import com.accessintervals.tools.utils.Utils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import satellite.access.tools.Simulation;
+import satellite.access.tools.assets.entities.Position;
+import satellite.access.tools.assets.entities.Satellite;
+import satellite.access.tools.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;

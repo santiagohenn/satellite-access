@@ -1,12 +1,5 @@
 package satellite.access.tools;
 
-import com.accessintervals.tools.assets.Asset;
-import com.accessintervals.tools.assets.entities.Position;
-import com.accessintervals.tools.assets.entities.Satellite;
-import com.accessintervals.tools.structures.Ephemeris;
-import com.accessintervals.tools.structures.Interval;
-import com.accessintervals.tools.utils.Log;
-import com.accessintervals.tools.utils.Utils;
 import com.google.gson.Gson;
 import org.hipparchus.geometry.euclidean.threed.Vector3D;
 import org.hipparchus.ode.events.Action;
@@ -31,6 +24,13 @@ import org.orekit.utils.Constants;
 import org.orekit.utils.IERSConventions;
 import org.orekit.utils.PVCoordinates;
 import org.orekit.utils.TimeStampedPVCoordinates;
+import satellite.access.tools.assets.Asset;
+import satellite.access.tools.assets.entities.Satellite;
+import satellite.access.tools.assets.entities.Position;
+import satellite.access.tools.structures.Ephemeris;
+import satellite.access.tools.structures.Interval;
+import satellite.access.tools.utils.Log;
+import satellite.access.tools.utils.Utils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -155,7 +155,7 @@ public class Simulation {
                 .allMatch(s -> s.contains("itrf.versions.conf") || s.contains("tai-utc.dat") || s.contains("finals2000A.all"))) {
             Log.debug("Loading orbital data: itrf.versions.conf, tai-utc.dat, finals2000A.all");
             String orekitPath = "classpath:/static/orekit-data";
-            if (orekitPath == null || orekitPath.isBlank() || orekitPath.isEmpty()) {
+            if (orekitPath == null || orekitPath.isEmpty() || orekitPath.isEmpty()) {
                 Log.error("Insert orekit_data_path in properties or use the corresponding path-specified constructor.");
                 throw new RuntimeException("Insert orekit_data_path in properties or use the corresponding path-specified constructor.");
             }
@@ -375,7 +375,7 @@ public class Simulation {
 
     public Ephemeris computeTopocentricEphemeris(AbsoluteDate absoluteDate) {
         PVCoordinates pvInert = tlePropagator.propagate(absoluteDate).getPVCoordinates();
-        var pvCoordinates = inertialFrame.getTransformTo(topocentricFrame, absoluteDate).transformPVCoordinates(pvInert);
+        PVCoordinates pvCoordinates = inertialFrame.getTransformTo(topocentricFrame, absoluteDate).transformPVCoordinates(pvInert);
         return toEphemeris(absoluteDate, pvCoordinates);
     }
 
@@ -384,12 +384,12 @@ public class Simulation {
 
         long t0 = System.currentTimeMillis();
         ephemerisList.clear();
-        var lastPoint = false;
+        boolean lastPoint = false;
         AbsoluteDate pointerDate = startDate;
         while (pointerDate.compareTo(endDate) <= 0) {
             // Get the position and velocity of spacecraft in station frame at any time
             PVCoordinates pvInert = tlePropagator.propagate(pointerDate).getPVCoordinates();
-            var pvDevice = inertialFrame.getTransformTo(topocentricFrame, pointerDate).transformPVCoordinates(pvInert);
+            PVCoordinates pvDevice = inertialFrame.getTransformTo(topocentricFrame, pointerDate).transformPVCoordinates(pvInert);
 
             addEphemeris(pointerDate, pvDevice);
             pointerDate = pointerDate.shiftedBy(step);

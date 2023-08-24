@@ -1,7 +1,7 @@
 package satellite.access.tools.assets.entities;
 
-import com.accessintervals.tools.assets.Asset;
-import com.accessintervals.tools.structures.OrbitalElements;
+import satellite.access.tools.assets.Asset;
+import satellite.access.tools.structures.OrbitalElements;
 
 import java.util.Locale;
 

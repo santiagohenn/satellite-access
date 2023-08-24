@@ -1,7 +1,7 @@
 package satellite.access.tools.structures;
 
-import com.accessintervals.tools.exceptions.SatElsetException;
-import com.accessintervals.tools.exceptions.ValueOutOfRangeException;
+import satellite.access.tools.exceptions.SatElsetException;
+import satellite.access.tools.exceptions.ValueOutOfRangeException;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;

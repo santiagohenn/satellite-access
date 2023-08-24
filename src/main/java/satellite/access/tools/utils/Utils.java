@@ -1,15 +1,16 @@
 package satellite.access.tools.utils;
 
-import com.accessintervals.tools.assets.Asset;
-import com.accessintervals.tools.assets.entities.Position;
-import com.accessintervals.tools.assets.entities.Satellite;
-import com.accessintervals.tools.structures.Ephemeris;
-import com.accessintervals.tools.structures.OrbitalElements;
-import com.accessintervals.tools.structures.SatElset;
+
 import org.orekit.data.DataContext;
 import org.orekit.propagation.analytical.tle.TLE;
 import org.orekit.time.AbsoluteDate;
 import org.orekit.time.TimeScale;
+import satellite.access.tools.assets.Asset;
+import satellite.access.tools.assets.entities.Satellite;
+import satellite.access.tools.structures.Ephemeris;
+import satellite.access.tools.structures.OrbitalElements;
+import satellite.access.tools.structures.SatElset;
+import satellite.access.tools.assets.entities.Position;
 
 import java.io.*;
 import java.text.ParseException;
@@ -63,13 +64,13 @@ public class Utils {
     public static List<Position> positionsFromFile(String fileName) {
 
         List<Position> assetList = new ArrayList<>();
-        var file = new File(fileName);
-        try (var fr = new FileReader(file); var br = new BufferedReader(fr)) {
+        File file = new File(fileName);
+        try (FileReader fr = new FileReader(file); BufferedReader br = new BufferedReader(fr)) {
             String line;
             int id = 0;
             while ((line = br.readLine()) != null) {
                 if (!line.startsWith("//") && line.length() > 0) {
-                    var data = line.split(",");
+                    String[] data = line.split(",");
                     if (data.length == 4) {
                         assetList.add(new Position(id++, data[0], Double.parseDouble(data[1]), Double.parseDouble(data[2]), Double.parseDouble(data[3])));
                     } else if (data.length == 3) {
@@ -86,48 +87,6 @@ public class Utils {
         }
 
         return assetList;
-    }
-
-    /**
-     * Reads a file containing asset(s) parameter(s) and returns a list of objects accordingly
-     *
-     * @param fileName The path of the file
-     *
-     * @return List<Asset>
-     */
-    public static List<Satellite> satellitesFromFile(String fileName) {
-
-        List<Satellite> satelliteList = new ArrayList<>();
-        var file = new File(fileName);
-        try (var fr = new FileReader(file); var br = new BufferedReader(fr)) {
-            String line;
-            int id = 0;
-            while ((line = br.readLine()) != null) {
-                if (!line.startsWith("//") && line.length() > 0) {
-                    var data = line.split(",");
-                    satelliteList.add(new Satellite(id++, data[0], Double.parseDouble(data[1]), Double.parseDouble(data[2]), Double.parseDouble(data[3])
-                            , Double.parseDouble(data[4]), Double.parseDouble(data[5]), Double.parseDouble(data[6])));
-                }
-            }
-        } catch (FileNotFoundException e) {
-            Log.warn("Unable to find file: " + fileName);
-            e.printStackTrace();
-        } catch (IOException e) {
-            Log.error("IOException: " + fileName);
-            e.printStackTrace();
-        }
-
-        return satelliteList;
-    }
-
-    /**
-     * Get the Satellite's period in minutes
-     *
-     * @return double
-     */
-    public static double getSatellitePeriodMinutes(Satellite satellite) {
-        var tle = satellite2tle(satellite);
-        return (24 * 60) / (tle.getMeanMotion());
     }
 
     /**
@@ -310,7 +269,7 @@ public class Utils {
      * @return Satellite
      */
     public static Satellite tle2satellite(String tle1, String tle2) {
-        var satellite = new Satellite(tle1, tle2);
+        Satellite satellite = new Satellite(tle1, tle2);
         satellite.setElements(tle2elements(tle1, tle2));
         return satellite;
     }
@@ -338,7 +297,7 @@ public class Utils {
      */
     public static OrbitalElements tle2elements(String tle1, String tle2) {
 
-        var orbitalElements = new OrbitalElements();
+        OrbitalElements orbitalElements = new OrbitalElements();
         SatElset data = new SatElset();
         try {
             data = new SatElset(tle1, tle2);
@@ -369,7 +328,7 @@ public class Utils {
             path = path + "/";
         }
 
-        var file = new File(path);
+        File file = new File(path);
         if (!file.exists()) {
             Log.fatal("Failed to find directory: " + file.getAbsolutePath());
             //System.exit(1);
@@ -442,9 +401,9 @@ public class Utils {
      * @return String
      */
     public static String unix2stamp(long unix) {
-        var dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTCG"));
-        var date = new Date(unix);
+        Date date = new Date(unix);
         return dateFormat.format(date);
     }
 
@@ -454,9 +413,9 @@ public class Utils {
      * @return String
      */
     public static String unix2stampGuido(long unix) {
-        var dateFormat = new SimpleDateFormat("d MMM yyyy HH:mm:ss.SSS");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("d MMM yyyy HH:mm:ss.SSS");
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTCG"));
-        var date = new Date(unix);
+        Date date = new Date(unix);
         return dateFormat.format(date);
     }
 
@@ -468,9 +427,9 @@ public class Utils {
      */
     public static long stamp2unix(String dateStamp) {
 
-        var dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTCG"));
-        var parsedDate = new Date();
+        Date parsedDate = new Date();
         try {
             parsedDate = dateFormat.parse(dateStamp);
             return parsedDate.getTime();
