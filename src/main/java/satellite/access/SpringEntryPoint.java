@@ -5,6 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 /** This class serves as an entry point for the Spring Boot app. */
 @SpringBootApplication
@@ -26,4 +29,5 @@ public class SpringEntryPoint {
     logger.info(
         "Hello from Cloud Run! The container started successfully and is listening for HTTP requests on " + port);
   }
+
 }

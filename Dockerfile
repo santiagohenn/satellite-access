@@ -8,6 +8,8 @@ WORKDIR /app
 COPY pom.xml ./
 # Copy local code to the container image.
 COPY src ./src
+# Copy orekit-data to the container image.
+COPY src/main/resources/static/orekit-data ./orekit-data
 
 # Download dependencies and build a release artifact.
 RUN mvn package -DskipTests
@@ -18,7 +20,10 @@ RUN mvn package -DskipTests
 FROM openjdk:11.0.16-jre-slim
 
 # Copy the jar to the production image from the builder stage.
-COPY --from=build-env /app/target/hello-world-*.jar /hello-world.jar
+COPY --from=build-env /app/target/satellite-access-*.jar /satellite-access.jar
+
+# Copy orekit-data to the container image.
+COPY --from=build-env /app/target/classes/static/orekit-data /orekit-data
 
 # Run the web service on container startup.
-CMD ["java", "-jar", "/hello-world.jar"]
+CMD ["java", "-jar", "/satellite-access.jar"]

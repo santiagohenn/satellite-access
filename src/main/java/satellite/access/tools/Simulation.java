@@ -154,15 +154,26 @@ public class Simulation {
         if (manager.getLoadedDataNames().stream()
                 .allMatch(s -> s.contains("itrf.versions.conf") || s.contains("tai-utc.dat") || s.contains("finals2000A.all"))) {
             Log.debug("Loading orbital data: itrf.versions.conf, tai-utc.dat, finals2000A.all");
-            String orekitPath = "classpath:/static/orekit-data";
+            String orekitPath = "/static/orekit-data/}";
             if (orekitPath == null || orekitPath.isEmpty() || orekitPath.isEmpty()) {
                 Log.error("Insert orekit_data_path in properties or use the corresponding path-specified constructor.");
                 throw new RuntimeException("Insert orekit_data_path in properties or use the corresponding path-specified constructor.");
             }
             //OrekitLoader orekitLoader = new OrekitLoader();
-            File orekitFile = Utils.loadDirectory("src/main/resources/static/orekit-data");
+            File orekitFile = new File("../orekit-data");
+
+            if (orekitFile.isDirectory()) {
+                File[] contents = orekitFile.listFiles();
+                if (contents != null) {
+                    for (File file : contents) {
+                        System.out.println(file.getName());
+                    }
+                }
+            } 
+
             //File orekitFile = orekitLoader.loadOrekitDataFromClasspath();
             manager.addProvider(new DirectoryCrawler(orekitFile));
+            //manager.addDefaultProviders();
             Log.debug("Loaded datasets: " + manager.getLoadedDataNames());
         }
 
