@@ -9,6 +9,7 @@ import satellite.access.tools.assets.entities.Position;
 import satellite.access.tools.assets.entities.Satellite;
 import satellite.access.tools.utils.Utils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,8 +18,52 @@ import java.util.List;
 public class AccessAPI {
 
     @GetMapping("/test")
-    public String hello() {
+    public String status() {
         return "Service working";
+    }
+
+    @GetMapping("/testOrekitDataAccess")
+    public String findDirs3() {
+        File[] contents = null;
+        ArrayList<String> fileNames = new ArrayList<>();
+        try {
+            File orekitFile = new File("/orekit-data/");
+            if (orekitFile.isDirectory()) {
+                contents = orekitFile.listFiles();
+                if (contents != null) {
+                    for (File file : contents) {
+                        System.out.println(file.getName());
+                        fileNames.add(file.getName());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+        
+        return fileNames.toString();
+    }
+
+    @GetMapping("/listFiles")
+    public String findDirs4() {
+        File[] contents = null;
+        ArrayList<String> fileNames = new ArrayList<>();
+        try {
+            File orekitFile = new File("/");
+            if (orekitFile.isDirectory()) {
+                contents = orekitFile.listFiles();
+                if (contents != null) {
+                    for (File file : contents) {
+                        System.out.println(file.getName());
+                        fileNames.add(file.getName());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+        
+        return fileNames.toString();
     }
 
     @GetMapping("/api/access/{tle1}/{tle2}/{position}/{startDate}/{endDate}/{timeStep}/{visTH}")

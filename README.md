@@ -1,58 +1,37 @@
-# Cloud Run Hello World with Cloud Code
+# Satellite Access Tool in Spring
 
-"Hello World" is a [Cloud Run](https://cloud.google.com/run/docs) application that renders a simple webpage.
+The Satellite Access API provides a simple and powerful way to retrieve satellite access information based on Two-Line Element Sets (TLEs). This API allows you to query access intervals between a specific Earth position and a satellite defined by its TLE, within a given time range and time step.
 
-For details on how to use this sample as a template in Cloud Code, read the documentation for Cloud Code for [VS Code](https://cloud.google.com/code/docs/vscode/quickstart-cloud-run?utm_source=ext&utm_medium=partner&utm_campaign=CDR_kri_gcp_cloudcodereadmes_012521&utm_content=-) or [IntelliJ](https://cloud.google.com/code/docs/intellij/quickstart-cloud-run?utm_source=ext&utm_medium=partner&utm_campaign=CDR_kri_gcp_cloudcodereadmes_012521&utm_content=-).
+## Endpoint
 
-### Table of Contents
-* [Getting Started with VS Code](#getting-started-with-vs-code)
-* [Getting Started with IntelliJ](#getting-started-with-intellij)
-* [Sign up for User Research](#sign-up-for-user-research)
+```
+/api/access/{tle1}/{tle2}/{position}/{startDate}/{endDate}/{timeStep}/{visTH}
+```
 
----
-## Getting Started with VS Code
+### Parameters
 
-### Run the app locally with the Cloud Run Emulator
-1. Click on the Cloud Code status bar and select 'Run on Cloud Run Emulator'.  
-![image](./img/status-bar.png)
+- `tle1`: Line 1 of the TLE (Two-Line Element Set)
+- `tle2`: Line 2 of the TLE
+- `position`: Latitude, Longitude, Altitude (degrees, degrees, meters)
+- `startDate`: Start date in ISO8601 format
+- `endDate`: End date in ISO8601 format
+- `timeStep`: Time step in seconds
+- `visTH`: Visibility threshold above the horizon in degrees
 
-2. Use the Cloud Run Emulator dialog to specify your [builder option](https://cloud.google.com/code/docs/vscode/deploying-a-cloud-run-app#deploying_a_cloud_run_service). Cloud Code supports Docker, Jib, and Buildpacks. See the skaffold documentation on [builders](https://skaffold.dev/docs/pipeline-stages/builders/) for more information about build artifact types.  
-![image](./img/build-config.png)
+## Example
 
-3. Click ‘Run’. Cloud Code begins building your image.
+Consider the following TLE for the object "FALCON 9 R/B":
 
-4. View the build progress in the OUTPUT window. Once the build has finished, click on the URL in the OUTPUT window to view your live application.  
-![image](./img/cloud-run-url.png)
+```plaintext
+FALCON 9 R/B            
+1 58348U 23175C   23344.54239545  .00000051  00000+0 -47101-3 0  9991
+2 58348   9.0106 159.3778 1972200 262.0639  75.2478  7.34850764  2037
+```
 
-5. To stop the application, click the stop icon on the Debug Toolbar.
+For the first hour from January 1, 2024, at 16:00:00, with a threshold of 5 degrees and a time step of 30 seconds, the API request would look like:
 
----
-## Getting Started with IntelliJ
+```plaintext
+/api/access/1%2058348U%2023175C%20%20%2023344.54239545%20%20.00000051%20%2000000+0%20-47101-3%200%20%209991/2%2058348%20%20%209.0106%20159.3778 1972200%20262.0639%20%2075.2478%20%207.34850764%20%202037/0,0,0/2024-01-01T16:00:00.000/2024-01-02T16:00:00.000/30/5
+```
 
-### Run the app locally with the Cloud Run Emulator
-
-#### Define run configuration
-
-1. Click the Run/Debug configurations dropdown on the top taskbar and select 'Edit Configurations'.  
-![image](./img/edit-config.png)
-
-2. Select 'Cloud Run: Run Locally' and specify your [builder option](https://cloud.google.com/code/docs/intellij/developing-a-cloud-run-app#defining_your_run_configuration). Cloud Code supports Docker, Jib, and Buildpacks. See the skaffold documentation on [builders](https://skaffold.dev/docs/pipeline-stages/builders/) for more information about build artifact types.  
-![image](./img/local-build-config.png)
-
-#### Run the application
-1. Click the Run/Debug configurations dropdown and select 'Cloud Run: Run Locally'. Click the run icon.  
-![image](./img/config-run-locally.png)
-
-2. View the build process in the output window. Once the build has finished, you will receive a notification from the Event Log. Click 'View' to access the local URLs for your deployed services.  
-![image](./img/local-success.png)
-
----
-## Sign up for User Research
-
-We want to hear your feedback!
-
-The Cloud Code team is inviting our user community to sign-up to participate in Google User Experience Research. 
-
-If you’re invited to join a study, you may try out a new product or tell us what you think about the products you use every day. At this time, Google is only sending invitations for upcoming remote studies. Once a study is complete, you’ll receive a token of thanks for your participation such as a gift card or some Google swag. 
-
-[Sign up using this link](https://google.qualtrics.com/jfe/form/SV_4Me7SiMewdvVYhL?reserved=1&utm_source=In-product&Q_Language=en&utm_medium=own_prd&utm_campaign=Q1&productTag=clou&campaignDate=January2021&referral_code=UXbT481079) and answer a few questions about yourself, as this will help our research team match you to studies that are a great fit.
+This request retrieves access intervals for the specified satellite and Earth position within the given time range and step, considering a visibility threshold above the horizon.
